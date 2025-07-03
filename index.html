@@ -4,15 +4,19 @@
   <meta charset="UTF-8" />
   <title>Змейка 🐍</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       background: #111;
       color: #0f0;
       font-family: monospace;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      height: 100vh;
       margin: 0;
-      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
     }
 
     h1 {
@@ -23,10 +27,15 @@
       border: 2px solid #0f0;
       background-color: #000;
       display: none;
+      animation: fadeIn 0.8s ease-in-out;
     }
 
     #menu, #game-ui {
       text-align: center;
+    }
+
+    #menu {
+      animation: fadeIn 1s ease-in-out;
     }
 
     #menu button, .controls button {
@@ -38,10 +47,16 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    #menu button:hover {
+      transform: scale(1.1);
     }
 
     #game-ui {
       display: none;
+      animation: fadeIn 1s ease-in-out;
     }
 
     #score {
@@ -71,6 +86,11 @@
         flex-direction: column;
         align-items: center;
       }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -129,8 +149,9 @@
       canvas.style.display = "block";
       resetGame();
       gameInterval = setInterval(gameLoop, 150);
-      document.getElementById("bg-music").volume = 0.2;
-      document.getElementById("bg-music").play();
+      const bgMusic = document.getElementById("bg-music");
+      bgMusic.volume = 0.2;
+      bgMusic.play();
     }
 
     function resetGame() {
@@ -157,8 +178,9 @@
         snake.some((s, i) => i > 0 && s.x === head.x && s.y === head.y)
       ) {
         clearInterval(gameInterval);
-        document.getElementById("bg-music").pause();
-        document.getElementById("bg-music").currentTime = 0;
+        const bgMusic = document.getElementById("bg-music");
+        bgMusic.pause();
+        bgMusic.currentTime = 0;
         document.getElementById("lose-sound").play();
 
         setTimeout(() => {
@@ -176,7 +198,7 @@
         score++;
         updateScore();
         checkAchievement();
-        document.getElementById("eat-sound").play(); // звук еды
+        document.getElementById("eat-sound").play();
         food = {
           x: Math.floor(Math.random() * tileCount),
           y: Math.floor(Math.random() * tileCount)
@@ -225,4 +247,3 @@
   </script>
 </body>
 </html>
-
